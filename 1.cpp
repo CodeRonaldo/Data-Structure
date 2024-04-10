@@ -1,12 +1,13 @@
+//é¡ºåºè¡¨æ¿å­
 #include<iostream>
 using namespace std;
-#define eleType double //·½±ãĞŞ¸ÄÊı¾İÀàĞÍ
+#define eleType double //æ–¹ä¾¿ä¿®æ”¹æ•°æ®ç±»å‹
 struct SequentialList
 {
 	
-	eleType* elements;//ÔªËØ
-	int size;//µ±Ç°ÔªËØ¸öÊı
-	int capacity;//×ÜÈİÁ¿
+	eleType* elements;//å…ƒç´ 
+	int size;//å½“å‰å…ƒç´ ä¸ªæ•°
+	int capacity;//æ€»å®¹é‡
 };
 void initializeList(SequentialList* List, int capacity)
 {
@@ -30,16 +31,16 @@ bool isEmpty(SequentialList* List)
 }
 void insert(SequentialList* List, int index, eleType element)
 {
-	//ÏÈÅĞ¶ÏindexÊÇ·ñºÏ·¨,²åÈëÊ±¿ÉÒÔÈÃindex=size£¬´ËÊ±²åÈëµ½Ä©Î²
+	//å…ˆåˆ¤æ–­indexæ˜¯å¦åˆæ³•,æ’å…¥æ—¶å¯ä»¥è®©index=sizeï¼Œæ­¤æ—¶æ’å…¥åˆ°æœ«å°¾
 	if (index < 0 || index > List->size)
-	throw std::invalid_argument("Invalid Index");//ÌáÊ¾·Ç·¨
-	//ÅĞ¶ÏË³Ğò±íÊÇ·ñÂú£¬Èç¹ûÂúĞèÀ©Èİ,À©Èİ±¶Ôö
+	throw std::invalid_argument("Invalid Index");//æç¤ºéæ³•
+	//åˆ¤æ–­é¡ºåºè¡¨æ˜¯å¦æ»¡ï¼Œå¦‚æœæ»¡éœ€æ‰©å®¹,æ‰©å®¹å€å¢
 	if (List->size == List->capacity)
 	{
-		//ÒÑÂú
-		int newCapacity = List->capacity * 2;//À©Èİ
+		//å·²æ»¡
+		int newCapacity = List->capacity * 2;//æ‰©å®¹
 		eleType* newElements = new eleType[newCapacity];
-		//¸´ÖÆÔ­À´µÄ±í
+		//å¤åˆ¶åŸæ¥çš„è¡¨
 		for (int i = 0; i < List->size; ++i)
 		{
 			newElements[i] = List->elements[i];
@@ -47,60 +48,60 @@ void insert(SequentialList* List, int index, eleType element)
 		//delete[]List->elements;
 		List->elements = newElements;
 		List->capacity = newCapacity;
-		//´ÓºóÍùÇ°£¬Ã¿¸öÊıÍùºó´æÒ»Î»
+		//ä»åå¾€å‰ï¼Œæ¯ä¸ªæ•°å¾€åå­˜ä¸€ä½
 		for (int i = List->size; i > index; --i)
 		{
 			List->elements[i] = List->elements[i - 1];
 		}
 		List->elements[index] = element;
-		List->size++;//ĞŞ¸Ä±íµÄ´óĞ¡
+		List->size++;//ä¿®æ”¹è¡¨çš„å¤§å°
 	}
 	else
 	{
-		//Èç¹ûÃ»Âú£¬Ö±½Ó´ÓºóÍùÇ°ºóÒÆÔªËØ£¬ÔÙ²å
+		//å¦‚æœæ²¡æ»¡ï¼Œç›´æ¥ä»åå¾€å‰åç§»å…ƒç´ ï¼Œå†æ’
 		for (int i = List->size; i > index; --i)
 		{
 			List->elements[i] = List->elements[i - 1];
 		}
 		List->elements[index] = element;
-		List->size++;//ĞŞ¸Ä±íµÄ´óĞ¡
+		List->size++;//ä¿®æ”¹è¡¨çš„å¤§å°
 	}
 }
 void deleteElement(SequentialList* List, int index)
 {
-	//ÏÈÅĞ¶ÏindexÊÇ·ñºÏ·¨
-	if (index < 0 || index >= List->size)//É¾³ıÊ±²»ÄÜ³¬¹ıÏÂ±êµÄ·¶Î§£¬ÕâÀïºÍ²åÈë²»Í¬
-		throw std::invalid_argument("Invalid Index");//ÌáÊ¾·Ç·¨
-	//´ÓÇ°Íùºó£¬Ç°ÒÆÔªËØ
+	//å…ˆåˆ¤æ–­indexæ˜¯å¦åˆæ³•
+	if (index < 0 || index >= List->size)//åˆ é™¤æ—¶ä¸èƒ½è¶…è¿‡ä¸‹æ ‡çš„èŒƒå›´ï¼Œè¿™é‡Œå’Œæ’å…¥ä¸åŒ
+		throw std::invalid_argument("Invalid Index");//æç¤ºéæ³•
+	//ä»å‰å¾€åï¼Œå‰ç§»å…ƒç´ 
 	for (int i = index; i < List->size; ++i)
 	{
 		List->elements[i] = List->elements[i + 1];
 	}
-	List->size--;//¼õĞ¡Ë³Ğò±í´óĞ¡
+	List->size--;//å‡å°é¡ºåºè¡¨å¤§å°
 }
 int findElement(SequentialList* List, eleType element)
 {
-	//·µ»ØÏÂ±ê
+	//è¿”å›ä¸‹æ ‡
 	for (int i = 0; i < List->size; i++)
 	{
 		if (List->elements[i] == element)
 			return i;
 	}
-	//ÕÒ²»µ½Ôò·µ»Ø-1
+	//æ‰¾ä¸åˆ°åˆ™è¿”å›-1
 	return -1;
 }
 eleType getElement(SequentialList* List, int index)
 {
-	//ÏÈÅĞ¶ÏindexÊÇ·ñºÏ·¨
+	//å…ˆåˆ¤æ–­indexæ˜¯å¦åˆæ³•
 	if (index < 0 || index >= List->size)
-		throw std::invalid_argument("Invalid Index");//ÌáÊ¾·Ç·¨
+		throw std::invalid_argument("Invalid Index");//æç¤ºéæ³•
 	return List->elements[index];
 }
 void updateElement(SequentialList* List, int index, eleType value)
 {
-	//ÏÈÅĞ¶ÏindexÊÇ·ñºÏ·¨
+	//å…ˆåˆ¤æ–­indexæ˜¯å¦åˆæ³•
 	if (index < 0 || index >= List->size)
-		throw std::invalid_argument("Invalid Index");//ÌáÊ¾·Ç·¨
+		throw std::invalid_argument("Invalid Index");//æç¤ºéæ³•
 	List->elements[index] = value;
 }
 int main()
@@ -116,10 +117,10 @@ int main()
 			eleType ele;
 			cin >> ele;
 			insert(&mylist, i, ele);
-			//´ËÊ±n==size
+			//æ­¤æ—¶n==size
 		}
 		eleType sum = 0;
-		eleType eMax = -1e8;//ÏÈ¼ÙÉè×î´óÖµÎªÒ»¸ö·Ç³£Ğ¡µÄÊı
+		eleType eMax = -1e8;//å…ˆå‡è®¾æœ€å¤§å€¼ä¸ºä¸€ä¸ªéå¸¸å°çš„æ•°
 		eleType eMin = 1e8;
 
 		for (int i = 0; i < mylist.size; i++)
